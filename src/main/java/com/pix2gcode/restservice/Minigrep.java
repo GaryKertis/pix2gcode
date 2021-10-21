@@ -14,7 +14,7 @@ public class Minigrep {
     public String create(String filename) {
         try {
             //TODO: Dynamic values.
-            Process process = new ProcessBuilder("/Users/garykertis/dev/minigrep/target/debug/minigrep", filename, "4", "1").start();
+            Process process = new ProcessBuilder("minigrep", filename, "4", "1").start();
             log.debug("Waiting for minigrep...");
 
             process.waitFor(10, TimeUnit.SECONDS);

@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 @Slf4j
 public class StorageService {
 
-    private String temp = System.getProperty("java.io.tmpdir");
+    private String temp = "/tmp/";
 
     public String store(MultipartFile file) {
         String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME);

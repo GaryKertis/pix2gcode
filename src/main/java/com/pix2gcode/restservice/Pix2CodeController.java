@@ -25,11 +25,13 @@ public class Pix2CodeController {
         this.minigrep = minigrep;
     }
 
+    @CrossOrigin
     @GetMapping("/greeting")
     public Pix2Code greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
         return new Pix2Code(counter.incrementAndGet(), String.format(template, name));
     }
 
+    @CrossOrigin
     @PostMapping("/upload")
     @ResponseBody
     public byte[] handleFileUpload(@RequestParam("file") MultipartFile file,

@@ -6,6 +6,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 @Slf4j
@@ -27,6 +30,16 @@ public class StorageService {
             throw new Pix2CodeException("Error saving the uploaded file!");
         }
 
+    }
+
+    public String readFile(String filename) {
+        Path filePath = Paths.get(filename);
+        try {
+            return String.join("\n", Files.readAllLines(filePath));
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            throw new Pix2CodeException("Error retrieving the converted file!");
+        }
     }
 
     public byte[] retrieve(String filename) {

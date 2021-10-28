@@ -6,15 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.concurrent.atomic.AtomicLong;
-
 @RestController
 @Slf4j
 public class Pix2CodeController {
-
-
-    private static final String template = "Hello, %s!";
-    private final AtomicLong counter = new AtomicLong();
 
     private final StorageService storageService;
     private final Minigrep minigrep;
@@ -26,13 +20,28 @@ public class Pix2CodeController {
     }
 
     @CrossOrigin
-    @GetMapping("/greeting")
-    public Pix2Code greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Pix2Code(counter.incrementAndGet(), String.format(template, name));
+    @GetMapping("/ping")
+    public String ping() {
+        return "Hello!";
     }
 
     @CrossOrigin
     @PostMapping("/upload")
+    public Pix2Code greeting(@RequestParam("file") MultipartFile file,
+                          RedirectAttributes redirectAttributes) {
+        String savedFile = storageService.store(file);
+        log.debug("Saved file {}", savedFile);
+
+        String convertedFile = minigrep.create(savedFile);
+        log.debug("Converted file {}", convertedFile);
+
+        String fileContents = storageService.readFile(convertedFile);
+
+        return new Pix2Code(convertedFile.hashCode(), fileContents);
+    }
+
+    @CrossOrigin
+    @PostMapping("/uploadFile")
     @ResponseBody
     public byte[] handleFileUpload(@RequestParam("file") MultipartFile file,
                           RedirectAttributes redirectAttributes) {

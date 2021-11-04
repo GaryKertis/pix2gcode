@@ -28,11 +28,14 @@ public class Pix2CodeController {
     @CrossOrigin
     @PostMapping("/upload")
     public Pix2Code greeting(@RequestParam("file") MultipartFile file,
+                          @RequestParam("pixelSize") String pixelSize,
                           RedirectAttributes redirectAttributes) {
         String savedFile = storageService.store(file);
         log.debug("Saved file {}", savedFile);
 
-        String convertedFile = minigrep.create(savedFile);
+        MinigrepRequest minigrepRequest = new MinigrepRequest(savedFile, pixelSize);
+
+        String convertedFile = minigrep.create(minigrepRequest);
         log.debug("Converted file {}", convertedFile);
 
         String fileContents = storageService.readFile(convertedFile);
@@ -44,11 +47,15 @@ public class Pix2CodeController {
     @PostMapping("/uploadFile")
     @ResponseBody
     public byte[] handleFileUpload(@RequestParam("file") MultipartFile file,
+                          @RequestParam("pixelSize") String pixelSize,
                           RedirectAttributes redirectAttributes) {
         String savedFile = storageService.store(file);
         log.debug("Saved file {}", savedFile);
 
-        String convertedFile = minigrep.create(savedFile);
+
+        MinigrepRequest minigrepRequest = new MinigrepRequest(savedFile, pixelSize);
+
+        String convertedFile = minigrep.create(minigrepRequest);
         log.debug("Converted file {}", convertedFile);
 
         return storageService.retrieve(convertedFile);

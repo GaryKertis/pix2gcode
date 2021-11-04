@@ -11,11 +11,15 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class Minigrep {
 
-    public String create(String filename) {
+    public String create(MinigrepRequest minigrepRequest) {
         try {
-            //TODO: Dynamic values.
-            Process process = new ProcessBuilder("minigrep", filename, "4", "1").start();
-            log.debug("Waiting for minigrep...");
+
+            Process process = new ProcessBuilder("minigrep",
+                    minigrepRequest.getFilename(),
+                    minigrepRequest.getPixelSize(),
+                    minigrepRequest.getDiagonalIntervalSize()
+            ).start();
+            log.debug("Waiting for minigrep... {}", minigrepRequest);
 
             process.waitFor(10, TimeUnit.SECONDS);
 

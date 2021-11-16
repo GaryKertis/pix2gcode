@@ -17,7 +17,7 @@ public class Minigrep {
             Process process = new ProcessBuilder("minigrep",
                     minigrepRequest.getFilename(),
                     minigrepRequest.getPixelSize(),
-                    minigrepRequest.getDiagonalIntervalSize()
+                    minigrepRequest.getPixelShading()
             ).start();
             log.debug("Waiting for minigrep... {}", minigrepRequest);
 

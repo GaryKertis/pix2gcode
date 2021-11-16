@@ -6,5 +6,5 @@ import lombok.Data;
 public class MinigrepRequest {
     private final String filename;
     private final String pixelSize;
-    private String diagonalIntervalSize = "1";
+    private final String pixelShading;
 }
